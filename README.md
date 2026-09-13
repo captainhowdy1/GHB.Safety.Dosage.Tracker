@@ -1,4 +1,6 @@
 # G Safety Tracker
+<img width="1080" height="2256" alt="Screenshot_20260913-013548" src="https://github.com/user-attachments/assets/c6b91ba3-afd1-42d7-bdfe-258b57dda452" />
+<img width="1080" height="2410" alt="Screenshot_20260913-013609" src="https://github.com/user-attachments/assets/df653efc-f17c-47bd-af7f-050c68df41df" />
 
 A deliberately simple harm-reduction logger for doses of GHB, GBL, or 1,4-BDO that have **already been taken**.
 
