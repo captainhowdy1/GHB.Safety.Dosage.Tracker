@@ -3,6 +3,7 @@
 Ghb Safety Tracker is an Android harm-reduction app for tracking GHB, GBL, and BDO use.
 
 The app is designed to make recent dose history, elapsed time, and safety check-ins easy to see at a glance.
+<img width="1080" height="2256" alt="Screenshot_20260913-013548" src="https://github.com/user-attachments/assets/cd5af427-98e1-4415-a076-64d911e575e4" />
 
 ## Features
 
