@@ -1,42 +1,73 @@
-# G Safety Tracker
-<img width="1080" height="2256" alt="Screenshot_20260913-013548" src="https://github.com/user-attachments/assets/c6b91ba3-afd1-42d7-bdfe-258b57dda452" />
-<img width="1080" height="2410" alt="Screenshot_20260913-013609" src="https://github.com/user-attachments/assets/df653efc-f17c-47bd-af7f-050c68df41df" />
+# Ghb Safety Tracker
 
-A deliberately simple harm-reduction logger for doses of GHB, GBL, or 1,4-BDO that have **already been taken**.
+Ghb Safety Tracker is an Android harm-reduction app for tracking GHB, GBL, and BDO use.
 
-## What it does
-- Logs amount in mL, substance, and exact time.
-- Shows live elapsed time since the most recent logged dose.
-- Shows number of logged doses within the rolling previous 60 minutes.
-- Shows recent mL totals by substance rather than adding unlike substances together.
-- Before a third (or later) entry inside 60 minutes, displays a full-screen high-risk warning.
-- The warning lets the user cancel if the dose was not taken, or log it if it was already taken so the history remains accurate.
-- Stores data locally on the device. No account or network is required by the Android wrapper.
-- Can export history as CSV in normal browsers. WebView download behavior varies by Android version.
+The app is designed to make recent dose history, elapsed time, and safety check-ins easy to see at a glance.
 
-## Safety design
-This app intentionally does **not** estimate drug concentration in the body, recommend a dose, convert between GHB/GBL/BDO, or tell the user when another dose is safe. Those estimates would be unreliable and could create false reassurance.
+## Features
 
-## PWA version
-The `pwa` folder is a complete installable Progressive Web App. Host the folder over HTTPS, open it in Chrome on Android, then choose **Install app** / **Add to Home screen**. Once installed it works offline.
+- Log GHB, GBL, or BDO doses
+- Record amount taken in mL and time taken
+- Show elapsed time since the most recent dose
+- Warn when more than two doses are logged within one hour
+- Recent Dose Activity timeline covering the previous 6 hours
+- Visual indication of overlapping recent doses
+- Trusted safety contact support
+- One-touch call or text to a safety contact
+- Timed safety check-ins
+- Automatic SMS to the selected safety contact if a check-in expires without a response
+- Quick 30, 45, 60, and 90 minute safety timers
+- Custom safety timer
+- "I'm OK" and "+10 minutes" check-in controls
+- Option to arm a safety check immediately after logging a dose
+- Separate emergency-services option
+- Local device storage for dose history and settings
 
-For a quick same-network test from a computer:
+## Important Safety Notice
 
-```bash
-cd pwa
-python -m http.server 8080
-```
+G Safety Tracker is a harm-reduction logging and safety tool.
 
-Then open `http://COMPUTER-IP:8080` on the Android phone while both devices are on the same Wi-Fi. Browser PWA installation usually requires HTTPS, though the app itself can still be tested over local HTTP.
+It does not:
 
-## Native Android wrapper
-The `android` folder is a small native Android project that wraps the exact same interface in an offline WebView. It requires no Internet permission.
+- determine whether a dose is safe
+- calculate a safe time to redose
+- estimate blood concentration
+- estimate metabolism or impairment
+- provide medical advice
+- replace emergency medical services
 
-Current project configuration:
-- Android Gradle Plugin 9.4.0
-- compileSdk 36
-- targetSdk 36
-- minSdk 26
-- Java source, no third-party libraries
+The Recent Dose Activity timeline is a time-based visualization only. Its fading bands do not represent measured or estimated drug concentration in the body.
 
-Open the `android` folder in Android Studio Quail 4 (2026.1.4) or another compatible version. Let Android Studio install the requested SDK/Gradle components, then use **Build > Build APK(s)**. The debug APK will normally be generated under `app/build/outputs/apk/debug/`.
+If someone cannot be awakened, is having a seizure, is breathing abnormally, or appears to be experiencing a medical emergency, contact emergency services immediately.
+
+## Installation
+
+Download the latest APK from the GitHub Releases section.
+
+On Android, you may need to allow installation from unknown sources for the browser or file manager used to open the APK.
+
+## Updating
+
+New releases can normally be installed over an existing version if the APK is signed with the same Android signing key.
+
+## Source
+
+This repository contains the Android application source and release APKs.
+
+## Privacy
+
+Dose history, safety-contact information, and settings are stored locally on the device.
+
+The app does not require an account or cloud service for normal operation.
+
+SMS and phone functionality use Android system capabilities when initiated by the user or by an armed safety check.
+
+## Current Version
+
+G Safety Tracker v3.0
+
+## Disclaimer
+
+This project is intended for harm reduction and personal safety.
+
+It is not a medical device and should not be used to determine whether drug use is safe.
