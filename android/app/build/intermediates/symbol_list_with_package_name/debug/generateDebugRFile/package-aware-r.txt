@@ -1,3 +1,0 @@
-com.example.gsafetytracker
-drawable app_icon
-style AppTheme
