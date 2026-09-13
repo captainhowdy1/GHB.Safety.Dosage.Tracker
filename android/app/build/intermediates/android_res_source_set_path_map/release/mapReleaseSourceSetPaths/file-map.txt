@@ -1,0 +1,8 @@
+com.example.gsafetytracker.app-pngs-0 C:\Users\Greg\Desktop\G-Safety-Tracker\G-Safety-Tracker\android\app\build\generated\res\pngs\release
+com.example.gsafetytracker.app-updated_navigation_xml-1 C:\Users\Greg\Desktop\G-Safety-Tracker\G-Safety-Tracker\android\app\build\generated\updated_navigation_xml\release
+com.example.gsafetytracker.app-packageReleaseResources-2 C:\Users\Greg\Desktop\G-Safety-Tracker\G-Safety-Tracker\android\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
+com.example.gsafetytracker.app-packageReleaseResources-3 C:\Users\Greg\Desktop\G-Safety-Tracker\G-Safety-Tracker\android\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
+com.example.gsafetytracker.app-release-4 C:\Users\Greg\Desktop\G-Safety-Tracker\G-Safety-Tracker\android\app\build\intermediates\merged_res\release\mergeReleaseResources
+com.example.gsafetytracker.app-main-5 C:\Users\Greg\Desktop\G-Safety-Tracker\G-Safety-Tracker\android\app\src\main\res
+com.example.gsafetytracker.app-release-6 C:\Users\Greg\Desktop\G-Safety-Tracker\G-Safety-Tracker\android\app\src\release\res
+gradleHome-0 C:\Users\Greg\.gradle

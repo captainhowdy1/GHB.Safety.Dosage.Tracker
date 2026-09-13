@@ -1,0 +1,15 @@
+{
+  "name": "G Safety Tracker",
+  "short_name": "G Tracker",
+  "description": "A simple local harm-reduction log for GHB, GBL and 1,4-BDO doses already taken.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b0d",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

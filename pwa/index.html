@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#111111" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <title>G Safety Tracker</title>
+  <style>
+    :root {
+      --bg: #0b0b0d;
+      --panel: #17171b;
+      --panel2: #222228;
+      --text: #f5f5f7;
+      --muted: #b6b6bf;
+      --warn: #ffd54a;
+      --danger: #ff4d4f;
+      --danger-dark: #5b1012;
+      --border: #383841;
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { padding: max(14px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom)); }
+    button, input, select { font: inherit; }
+    .app { max-width: 760px; margin: 0 auto; }
+    .title { font-size: clamp(30px, 7vw, 46px); font-weight: 900; letter-spacing: -1px; margin: 4px 0 2px; }
+    .subtitle { color: var(--muted); font-size: 16px; margin-bottom: 14px; }
+    .notice { border: 2px solid var(--warn); background: #302907; border-radius: var(--radius); padding: 14px 16px; font-weight: 750; font-size: 16px; line-height: 1.35; margin: 12px 0; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .metric-label { color: var(--muted); font-weight: 750; font-size: 15px; text-transform: uppercase; letter-spacing: .04em; }
+    .metric { font-weight: 950; font-size: clamp(34px, 9vw, 60px); line-height: 1.05; margin-top: 6px; }
+    .metric-small { font-weight: 900; font-size: clamp(24px, 6vw, 36px); line-height: 1.1; margin-top: 8px; }
+    .metric-sub { color: var(--muted); font-size: 15px; margin-top: 7px; min-height: 20px; }
+    .entry { margin-top: 12px; }
+    label { display: block; font-size: 18px; font-weight: 850; margin: 16px 0 8px; }
+    input, select { width: 100%; min-height: 62px; border-radius: 16px; border: 2px solid var(--border); background: var(--panel2); color: var(--text); padding: 10px 14px; font-size: 25px; font-weight: 750; outline: none; }
+    select { font-size: 20px; }
+    input:focus, select:focus { border-color: var(--warn); }
+    .amount-wrap { position: relative; }
+    .amount-wrap span { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 22px; font-weight: 800; pointer-events: none; }
+    .amount-wrap input { padding-right: 70px; }
+    .primary { width: 100%; min-height: 82px; border: 0; border-radius: 18px; margin-top: 18px; background: var(--warn); color: #141414; font-weight: 950; font-size: clamp(28px, 7vw, 38px); cursor: pointer; }
+    .primary:active { transform: scale(.99); }
+    .secondary { min-height: 56px; border-radius: 14px; border: 1px solid var(--border); background: var(--panel2); color: var(--text); font-weight: 800; padding: 10px 14px; cursor: pointer; }
+    .danger-button { background: var(--danger); color: #fff; border: 0; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .history { margin-top: 12px; }
+    .history-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .history-title { font-size: 23px; font-weight: 900; margin: 0; }
+    .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 14px 0; border-top: 1px solid var(--border); align-items: center; }
+    .row:first-of-type { margin-top: 8px; }
+    .row-main { font-size: 20px; font-weight: 900; }
+    .row-sub { color: var(--muted); font-size: 15px; margin-top: 3px; }
+    .row-amount { font-size: 26px; font-weight: 950; }
+    .empty { color: var(--muted); padding: 18px 0 8px; text-align: center; }
+    .footer-note { color: var(--muted); font-size: 14px; line-height: 1.45; padding: 14px 3px 4px; }
+    .overlay { position: fixed; inset: 0; display: none; z-index: 9999; background: rgba(0,0,0,.94); padding: max(18px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom)); overflow-y: auto; }
+    .overlay.show { display: flex; align-items: center; justify-content: center; }
+    .warning-box { width: min(720px, 100%); border: 4px solid var(--danger); background: var(--danger-dark); border-radius: 24px; padding: 22px; box-shadow: 0 0 0 100vmax rgba(0,0,0,.25); }
+    .warning-icon { font-size: 58px; line-height: 1; }
+    .warning-title { font-size: clamp(34px, 9vw, 56px); line-height: .98; font-weight: 1000; margin: 8px 0 14px; text-transform: uppercase; }
+    .warning-copy { font-size: clamp(20px, 5vw, 27px); line-height: 1.25; font-weight: 800; }
+    .warning-copy strong { color: #fff3a8; }
+    .warning-buttons { display: grid; gap: 12px; margin-top: 22px; }
+    .warning-buttons button { width: 100%; min-height: 72px; border-radius: 16px; font-weight: 950; font-size: 21px; padding: 10px 12px; cursor: pointer; }
+    .cancel { background: var(--warn); color: #111; border: 0; }
+    .already { background: transparent; color: #fff; border: 2px solid #ff8f90; }
+    .emergency { width: 100%; min-height: 62px; margin-top: 12px; border-radius: 16px; border: 2px solid var(--danger); background: transparent; color: #fff; font-size: 20px; font-weight: 900; }
+    .toast { position: fixed; left: 50%; bottom: max(22px, env(safe-area-inset-bottom)); transform: translateX(-50%) translateY(20px); opacity: 0; pointer-events: none; z-index: 10000; background: #fff; color: #111; padding: 13px 18px; border-radius: 999px; font-weight: 900; transition: .2s ease; white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } .actions { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1 class="title">G Safety Tracker</h1>
+    <div class="subtitle">Fast local dose logging. No account. No cloud.</div>
+
+    <div class="notice">This is a record, not a dosing calculator. It cannot tell you how much is active in your body or when another dose is safe.</div>
+
+    <section class="grid" aria-label="Current status">
+      <div class="card">
+        <div class="metric-label">Time since last logged dose</div>
+        <div class="metric" id="elapsed">--</div>
+        <div class="metric-sub" id="lastDose">No doses logged</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Logged in last 60 minutes</div>
+        <div class="metric" id="recentCount">0</div>
+        <div class="metric-sub" id="recentAmounts">0 doses</div>
+      </div>
+    </section>
+
+    <section class="card entry">
+      <div class="metric-label">Log a dose already taken</div>
+      <label for="substance">Substance</label>
+      <select id="substance">
+        <option value="Unspecified G">GHB / GBL / BDO, unspecified</option>
+        <option value="GHB">GHB</option>
+        <option value="GBL">GBL</option>
+        <option value="1,4-BDO">1,4-BDO</option>
+      </select>
+
+      <label for="amount">Amount taken</label>
+      <div class="amount-wrap">
+        <input id="amount" type="number" inputmode="decimal" min="0.01" max="100" step="0.1" placeholder="Enter amount" autocomplete="off" />
+        <span>mL</span>
+      </div>
+
+      <button class="primary" id="logButton">LOG DOSE NOW</button>
+      <div class="actions">
+        <button class="secondary" id="undoButton">Undo last entry</button>
+        <button class="secondary" id="exportButton">Export history</button>
+      </div>
+    </section>
+
+    <section class="card history">
+      <div class="history-header">
+        <h2 class="history-title">Recent history</h2>
+        <button class="secondary" id="clearButton">Clear</button>
+      </div>
+      <div id="historyList"></div>
+    </section>
+
+    <button class="emergency" id="emergencyButton">Emergency help / call 911</button>
+    <div class="footer-note">
+      GHB, GBL and 1,4-BDO can cause sudden unconsciousness and dangerous breathing suppression. Combining them with alcohol, opioids, benzodiazepines, sleep medicines or other depressants can sharply increase risk. If someone is hard to wake, breathing slowly or irregularly, vomiting while unconscious, turning blue/gray, or having a seizure, call emergency services and do not leave them alone.
+    </div>
+  </main>
+
+  <div class="overlay" id="warningOverlay" role="dialog" aria-modal="true" aria-labelledby="warningTitle">
+    <div class="warning-box">
+      <div class="warning-icon">⚠️</div>
+      <div class="warning-title" id="warningTitle">High-risk pattern</div>
+      <div class="warning-copy">
+        You already logged <strong>2 or more doses in the last 60 minutes.</strong><br><br>
+        Do not take another dose based on this tracker. Effects can stack unpredictably and can lead to unconsciousness, vomiting, seizure, or dangerous breathing suppression.<br><br>
+        If this dose has <strong>already been taken</strong>, log it anyway so the record stays accurate.
+      </div>
+      <div class="warning-buttons">
+        <button class="cancel" id="cancelWarning">I HAVE NOT TAKEN IT. CANCEL</button>
+        <button class="already" id="confirmTaken">IT WAS ALREADY TAKEN. LOG IT</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const STORAGE_KEY = 'gSafetyTrackerDosesV1';
+      const HOUR_MS = 60 * 60 * 1000;
+      const $ = (id) => document.getElementById(id);
+      const els = {
+        elapsed: $('elapsed'), lastDose: $('lastDose'), recentCount: $('recentCount'), recentAmounts: $('recentAmounts'),
+        substance: $('substance'), amount: $('amount'), logButton: $('logButton'), undoButton: $('undoButton'), exportButton: $('exportButton'),
+        clearButton: $('clearButton'), historyList: $('historyList'), warningOverlay: $('warningOverlay'), cancelWarning: $('cancelWarning'),
+        confirmTaken: $('confirmTaken'), toast: $('toast'), emergencyButton: $('emergencyButton')
+      };
+      let pendingDose = null;
+
+      function loadDoses() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const parsed = raw ? JSON.parse(raw) : [];
+          return Array.isArray(parsed) ? parsed.filter(d => Number.isFinite(d.time) && Number.isFinite(d.amount)) : [];
+        } catch { return []; }
+      }
+      function saveDoses(doses) { localStorage.setItem(STORAGE_KEY, JSON.stringify(doses)); }
+      function ordered(doses) { return [...doses].sort((a,b) => b.time - a.time); }
+      function withinHour(doses, now = Date.now()) { return doses.filter(d => d.time <= now && (now - d.time) < HOUR_MS); }
+      function fmtClock(ms) { return new Date(ms).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
+      function fmtDate(ms) { return new Date(ms).toLocaleDateString([], { month: 'short', day: 'numeric' }); }
+      function fmtAmount(n) { return Number(n).toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1'); }
+      function formatElapsed(ms) {
+        if (ms < 0) ms = 0;
+        const s = Math.floor(ms / 1000);
+        const h = Math.floor(s / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        const sec = s % 60;
+        if (h > 0) return `${h}h ${m}m`;
+        return `${m}:${String(sec).padStart(2,'0')}`;
+      }
+      function recentSummary(recent) {
+        if (!recent.length) return '0 doses';
+        const groups = {};
+        for (const d of recent) groups[d.substance || 'Unspecified G'] = (groups[d.substance || 'Unspecified G'] || 0) + d.amount;
+        return Object.entries(groups).map(([k,v]) => `${k}: ${fmtAmount(v)} mL`).join(' • ');
+      }
+      function toast(text) {
+        els.toast.textContent = text;
+        els.toast.classList.add('show');
+        setTimeout(() => els.toast.classList.remove('show'), 1800);
+      }
+      function render() {
+        const doses = ordered(loadDoses());
+        const now = Date.now();
+        const last = doses[0];
+        const recent = withinHour(doses, now);
+        els.elapsed.textContent = last ? formatElapsed(now - last.time) : '--';
+        els.lastDose.textContent = last ? `${fmtAmount(last.amount)} mL ${last.substance} at ${fmtClock(last.time)}` : 'No doses logged';
+        els.recentCount.textContent = String(recent.length);
+        els.recentAmounts.textContent = recentSummary(recent);
+        els.undoButton.disabled = !doses.length;
+        els.historyList.innerHTML = '';
+        if (!doses.length) {
+          els.historyList.innerHTML = '<div class="empty">Nothing logged yet.</div>';
+        } else {
+          doses.slice(0, 10).forEach(d => {
+            const row = document.createElement('div');
+            row.className = 'row';
+            row.innerHTML = `<div><div class="row-main">${escapeHtml(d.substance)}</div><div class="row-sub">${fmtDate(d.time)} • ${fmtClock(d.time)}</div></div><div class="row-amount">${fmtAmount(d.amount)} mL</div>`;
+            els.historyList.appendChild(row);
+          });
+        }
+      }
+      function escapeHtml(s) { return String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+      function buildDose() {
+        const amount = Number.parseFloat(els.amount.value);
+        if (!Number.isFinite(amount) || amount <= 0) { toast('Enter the amount already taken.'); els.amount.focus(); return null; }
+        return { id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`, substance: els.substance.value, amount, time: Date.now() };
+      }
+      function commitDose(dose) {
+        const doses = loadDoses();
+        doses.push(dose);
+        saveDoses(doses);
+        els.amount.value = '';
+        pendingDose = null;
+        els.warningOverlay.classList.remove('show');
+        render();
+        toast('Dose logged.');
+      }
+      function attemptLog() {
+        const dose = buildDose();
+        if (!dose) return;
+        const recent = withinHour(loadDoses(), dose.time);
+        if (recent.length >= 2) {
+          pendingDose = dose;
+          els.warningOverlay.classList.add('show');
+          els.cancelWarning.focus();
+        } else commitDose(dose);
+      }
+      els.logButton.addEventListener('click', attemptLog);
+      els.amount.addEventListener('keydown', e => { if (e.key === 'Enter') attemptLog(); });
+      els.cancelWarning.addEventListener('click', () => { pendingDose = null; els.warningOverlay.classList.remove('show'); toast('Entry canceled.'); });
+      els.confirmTaken.addEventListener('click', () => { if (pendingDose) commitDose(pendingDose); });
+      els.undoButton.addEventListener('click', () => {
+        const doses = ordered(loadDoses());
+        if (!doses.length) return;
+        const newestId = doses[0].id;
+        saveDoses(loadDoses().filter(d => d.id !== newestId));
+        render(); toast('Last entry removed.');
+      });
+      els.clearButton.addEventListener('click', () => {
+        if (confirm('Clear the entire dose history on this device?')) { localStorage.removeItem(STORAGE_KEY); render(); toast('History cleared.'); }
+      });
+      els.exportButton.addEventListener('click', () => {
+        const doses = ordered(loadDoses());
+        if (!doses.length) { toast('No history to export.'); return; }
+        const rows = [['timestamp','local_time','substance','amount_ml'], ...doses.map(d => [new Date(d.time).toISOString(), new Date(d.time).toLocaleString(), d.substance, d.amount])];
+        const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+        const blob = new Blob([csv], {type:'text/csv'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `g-safety-history-${new Date().toISOString().slice(0,10)}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      });
+      els.emergencyButton.addEventListener('click', () => { window.location.href = 'tel:911'; });
+      render();
+      setInterval(render, 1000);
+      if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    })();
+  </script>
+</body>
+</html>
